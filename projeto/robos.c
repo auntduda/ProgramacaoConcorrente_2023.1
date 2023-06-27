@@ -17,6 +17,7 @@
 
 #define BANCADAS 5
 #define ROBOS ((2*BANCADAS)+1)
+#define PRODUTOS 13
 
 //em TESE, eu queria criar uma lista dessa struct, pra representar cada bancada de ferramentas que tem entre 3 robos
 typedef struct bancada{
@@ -25,17 +26,37 @@ typedef struct bancada{
     int laco;
 } bancada;
 
-void* rotina(void* id)
+typedef struct produto{
+    int tipo;
+}produtos;
+
+bancada b[BANCADAS];
+pthread_t robos[ROBOS];
+produtos p[PRODUTOS];
+
+void* esteira(void* id)
 {
     int i = *((int*) id);
-    printf("em tese isso aqui eh um robo: %d\n", i);
-    pthread_exit(0);
+
+    for(int j=0; j<PRODUTOS; j++)
+    {
+        printf("O robo %d esta pegando o produto %d para mexer\nO produto %d eh to tipo %d\n", i, j, j, p[j].tipo);
+        sleep(3);
+    }
+
 }
 
 int main(/*int argc, char* argv[]*/)
 {
-    bancada b[BANCADAS];
-    pthread_t robos[ROBOS];
+
+    for(int i=0; i<BANCADAS; i++)
+    {
+        b[i].laco = 1; b[i].martelo = 1; b[i].machado = 1;
+        // dependendo de onde eu instancio isso aqui, robos diferentes pegam um instrumento da bancada
+    }
+
+    // classificando os produtos por tipos
+    for(int i=0; i<PRODUTOS; i++) p[i].tipo = rand()%7;
 
     for(int i=0; i<ROBOS; i++)
     {
@@ -43,7 +64,14 @@ int main(/*int argc, char* argv[]*/)
         id = (int*) malloc(sizeof(int));
         *id = i;
 
-        pthread_create(&robos[i], NULL, &rotina, (void*) (id));
+        pthread_create(&robos[i], NULL, &esteira, (void*) (id));
+        pthread_join(robos[i], NULL);
     }
+    
+    // eu ainda nao entendi muito bem pra que serve um join, entao vou deixar ele comentado ate ver que meu programa quebra sem ele
+    //for(int i=0; i<ROBOS; i++) pthread_join(robos[i], NULL);
+
+
+    return 0;
 }
 
