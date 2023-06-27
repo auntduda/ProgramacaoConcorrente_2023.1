@@ -46,6 +46,8 @@ void* esteira(void* id)
 
 }
 
+// adicionando um comentario aqui pra commitar as mudancas de verdade
+
 int main(/*int argc, char* argv[]*/)
 {
 
