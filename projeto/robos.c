@@ -397,15 +397,16 @@ void* esteira(void* id)
                     }
                     // se algum robo passar daqui, eh porque o martelo ou o machado voltaram pra bancada
 
-                    int ferrUsadas=2;
+                    bool pegouUmaFerramenta=false; // essa flag aqui eh feita pra me dizer se o robo pegou uma ferramenta e agora tem que pegar a outra
+                    int ferrUsadas=2; // com a ajuda da flag de cima, essa contadora me ajuda a ver se o robo usou as duas ferramentas
 
                     while(ferrUsadas)
                     {
-                        if(b[acessivel].martelo>0)
+                        if(b[acessivel].martelo>0 && !pegouUmaFerramenta)
                         {
                             b[acessivel].martelo--;
 
-                            printf("O robo %d pegou o martelo da bancada %d\n", i, acessivel);
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, acessivel);
                             
                             // usando o martelo no produto
                             sleep(3);
@@ -413,15 +414,15 @@ void* esteira(void* id)
                             //devolvendo o martelo pra bancada
                             b[acessivel].martelo++;
 
-                            printf("O robo %d devolveu o martelo para a bancada %d\n", i, acessivel);
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, acessivel);
                             
                             // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o martelo
-                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
-                        }else if(b[acessivel].machado>0)
+                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--; pegouUmaFerramenta=true;
+                        }else if(b[acessivel].machado>0 && pegouUmaFerramenta)
                         {
                             b[acessivel].machado--;
 
-                            printf("O robo %d pegou o machado da bancada %d\n", i, acessivel);
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, acessivel);
                             
                             // usando o machado no produto
                             sleep(2);
@@ -429,7 +430,7 @@ void* esteira(void* id)
                             //devolvendo o machado pra bancada
                             b[acessivel].machado++;
 
-                            printf("O robo %d devolveu o machado para a bancada %d\n", i, acessivel);
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, acessivel);
                             
                             // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o machado
                             pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
@@ -447,60 +448,61 @@ void* esteira(void* id)
                     }
                     // se algum robo passar daqui, eh porque tem pelo menos 1 martelo ou pelo menos 1 machado em alguma das bancadas perto dele
 
+                    bool pegouUmaFerramenta=false;
                     int ferrUsadas=2;
 
                     while(ferrUsadas)
                     {
-                        if(b[besq].martelo>0)
+                        if(b[besq].martelo>0 && !pegouUmaFerramenta)
                         {
                             b[besq].martelo--;
 
-                            printf("O robo %d pegou o martelo da bancada %d\n", i, besq);
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, besq);
                             
                             sleep(3);
 
                             b[besq].martelo++;
 
-                            printf("O robo %d devolveu o martelo para a bancada %d\n", i, besq);
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, besq);
                             
-                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
+                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--; pegouUmaFerramenta=true;
                         }
-                        else if(b[besq].machado>0)
+                        else if(b[besq].machado>0 && pegouUmaFerramenta)
                         {
                             b[besq].machado--;
 
-                            printf("O robo %d pegou o machado da bancada %d\n", i, besq);
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, besq);
 
                             sleep(2);
                             b[besq].machado++;
 
-                            printf("O robo %d devolveu o machado para a bancada %d\n", i, besq);
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, besq);
 
                             pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
-                        }else if(b[bdir].martelo>0)
+                        }else if(b[bdir].martelo>0 && !pegouUmaFerramenta)
                         {
                             b[bdir].martelo--;
 
-                            printf("O robo %d pegou o martelo da bancada %d\n", i, bdir);
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, bdir);
                             
                             sleep(3);
 
                             b[bdir].martelo++;
 
-                            printf("O robo %d devolveu o martelo para a bancada %d\n", i, bdir);
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, bdir);
                             
-                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
+                            pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--; pegouUmaFerramenta=true;
                         }
-                        else if(b[bdir].machado>0)
+                        else if(b[bdir].machado>0 && pegouUmaFerramenta)
                         {
                             b[bdir].machado--;
 
-                            printf("O robo %d pegou o machado da bancada %d\n", i, bdir);
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, bdir);
 
                             sleep(2);
                             b[bdir].machado++;
 
-                            printf("O robo %d devolveu o machado para a bancada %d\n", i, bdir);
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, bdir);
 
                             pthread_cond_broadcast(&cond_marteloMachado); ferrUsadas--;
                         }
@@ -523,6 +525,7 @@ void* esteira(void* id)
                 break;
         }
 
+        printf("O produto %d esta pronto para entrega\n", j);
         pthread_mutex_unlock(&lock_bancada);
     }
 
