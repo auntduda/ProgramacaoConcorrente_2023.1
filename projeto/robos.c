@@ -26,7 +26,7 @@ pthread_cond_t cond_laco = PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond_marteloMachado = PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond_marteloLaco = PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond_machadoLaco = PTHREAD_COND_INITIALIZER;
-
+pthread_cond_t cond_marteloMachadoLaco = PTHREAD_COND_INITIALIZER;
 
 #define BANCADAS 5
 #define ROBOS ((2*BANCADAS)+1)
@@ -52,93 +52,7 @@ produtos p[PRODUTOS];
 
 void usaFerramenta(int idRobo, int idBancada, bool podeUsarDuas, int be, int bd, char ferramenta)
 {
-    // maracutaia pessoal que fiz pra pegar o nome do caraio da ferramenta da bancada pra modularizar este cacete 
-    
-    // char *tool;
-
-    // switch (ferramenta){
-    //     case 'm':
-    //         *tool = "martelo";
-    //         break;
-    //     case 'h':
-    //         *tool = "machado";
-    //         break;
-    //     case 'l':
-    //         *tool = "laco";
-    //         break;
-    // }
-
-    // char tool[] = "ferramenta tal";
-
-    // if(podeUsarDuas)
-    // {
-    //     //esse if aqui eh pra quando o robo so pode usar 1 bancada
-
-    //     while(b[idBancada].martelo<=0)
-    //     {
-    //         // se nao tiver martelo na bancada, ele vai ter que esperar
-    //         printf("O robo %d esta esperando por um martelo na bancada %d\n", idRobo, idBancada);
-    //         pthread_cond_wait(&cond_martelo, &lock_bancada);
-    //     }
-    //     // se algum robo passar daqui, eh porque o martelo voltou pra bancada
-
-    //     if(b[idBancada].martelo>0)
-    //     {
-    //         b[idBancada].martelo--;
-
-    //         printf("O robo %d pegou o %s da bancada %d\n", idRobo, tool, idBancada);
-            
-    //         // usando o martelo no produto
-    //         sleep(3);
-
-    //         //devolvendo o martelo pra bancada
-    //         b[idBancada].martelo++;
-
-    //         printf("O robo %d devolveu o %s para a bancada %d\n", idRobo, tool, idBancada);
-            
-    //         // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o martelo
-    //         pthread_cond_broadcast(&cond_martelo);
-    //     }
-    // }else
-    // {
-    //     //esse else aqui eh pra quando o robo pode usar as duas bancadas
-
-    //     while(b[be].martelo<=0 && b[bd].martelo<=0)
-    //     {
-    //         // se nao tiver martelo em nenhuma das duas bancadas, ele vai ter que esperar
-    //         printf("O robo %d esta esperando por um martelo na bancada %d\n", idRobo, idBancada);
-    //         pthread_cond_wait(&cond_martelo, &lock_bancada);
-    //     }
-    //     // se algum robo passar daqui, eh porque tem pelo menos 1 martelo em alguma das bancadas perto dele
-
-    //     if(b[be].martelo>0)
-    //     {
-    //         b[be].martelo--;
-
-    //         printf("O robo %d pegou o %s da bancada %d\n", idRobo, tool, be);
-            
-    //         sleep(3);
-
-    //         b[be].martelo++;
-
-    //         printf("O robo %d devolveu o %s para a bancada %d\n", idRobo, tool, be);
-            
-    //         pthread_cond_broadcast(&cond_martelo);
-    //     }
-    //     else if(b[bd].martelo>0)
-    //     {
-    //         b[bd].martelo--;
-
-    //         printf("O robo %d pegou o %s da bancada %d\n", idRobo, tool, bd);
-
-    //         sleep(3);
-    //         b[bd].martelo++;
-
-    //         printf("O robo %d devolveu o %s para a bancada %d\n", idRobo, tool, bd);
-
-    //         pthread_cond_broadcast(&cond_martelo);
-    //     }
-    // }
+    // essa funcao aqui era pra me ajudar a modularizar esse codigo pra debugar ele posteriormente, mas ja que eu sou um MAMACO, depois eu refatoro isso daqui
 }
 
 void* esteira(void* id)
@@ -164,6 +78,7 @@ void* esteira(void* id)
             acessivel = besq; flag=true;
         }
         
+        // aqui comeca a merda
         // modularizar isso aqui depois pra debugar - agora vai na marra mesmo
         switch (p[j].tipo){
             case 1: // so pode usar martelo
@@ -551,7 +466,7 @@ void* esteira(void* id)
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, acessivel);
                             
                             // usando o laco no produto
-                            sleep(2);
+                            sleep(4);
 
                             //devolvendo o laco pra bancada
                             b[acessivel].laco++;
@@ -599,7 +514,7 @@ void* esteira(void* id)
 
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, besq);
 
-                            sleep(2);
+                            sleep(4);
                             b[besq].laco++;
 
                             printf("> O robo %d devolveu o laco para a bancada %d\n", i, besq);
@@ -625,7 +540,7 @@ void* esteira(void* id)
 
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, bdir);
 
-                            sleep(2);
+                            sleep(4);
                             b[bdir].laco++;
 
                             printf("> O robo %d devolveu o laco para a bancada %d\n", i, bdir);
@@ -661,7 +576,7 @@ void* esteira(void* id)
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, acessivel);
                             
                             // usando o laco no produto
-                            sleep(3);
+                            sleep(4);
 
                             //devolvendo o laco pra bancada
                             b[acessivel].laco++;
@@ -711,7 +626,7 @@ void* esteira(void* id)
 
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, besq);
                             
-                            sleep(3);
+                            sleep(4);
 
                             b[besq].laco++;
 
@@ -737,7 +652,7 @@ void* esteira(void* id)
 
                             printf(">> O robo %d pegou o laco da bancada %d\n", i, bdir);
                             
-                            sleep(3);
+                            sleep(4);
 
                             b[bdir].laco++;
 
@@ -763,7 +678,170 @@ void* esteira(void* id)
 
                 break;
             case 7: // pode usar os 3
-                printf("feature a ser implementada pra ferramenta %d\n", p[j].tipo);
+                if(flag)
+                {
+                    //esse if aqui eh pra quando o robo so pode usar 1 bancada
+
+                    while(b[acessivel].martelo<=0 || b[acessivel].laco<=0 || b[acessivel].machado<=0)
+                    {
+                        // se nao tiver martelo nem machado nem laco na bancada, ele vai ter que esperar
+                        printf("O robo %d esta esperando por um martelo ou por um laco ou por um machado na bancada %d\n", i, acessivel);
+                        pthread_cond_wait(&cond_marteloMachadoLaco, &lock_bancada);
+                    }
+                    // se algum robo passar daqui, eh porque o martelo ou o laco ou o machado voltaram pra bancada
+
+                    bool pegouUmaFerramenta=false; bool pegouDuasFerramentas=false; // essas flags aqui sao pra eu controlar quais ferramentas ja forma usadas pra eu nao usar a mesma ferramenta de novo e cagar com minha logica de problema
+                    int ferrUsadas=3; // com a ajuda da flag de cima, essa contadora me ajuda a ver se o robo usou as tres ferramentas
+
+                    while(ferrUsadas) // eu meio que to dando a ordem em que ele pega as ferramentas, QUE MERDAAAAAAAAAAAAAAAAAAAAAA
+                    {
+                        if(b[acessivel].martelo>0 && (!pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[acessivel].martelo--;
+
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, acessivel);
+                            
+                            // usando o martelo no produto
+                            sleep(3);
+
+                            //devolvendo o martelo pra bancada
+                            b[acessivel].martelo++;
+
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, acessivel);
+                            
+                            // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o martelo
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouUmaFerramenta=true;
+                        }else if(b[acessivel].laco>0 && (pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[acessivel].laco--;
+
+                            printf(">> O robo %d pegou o laco da bancada %d\n", i, acessivel);
+                            
+                            // usando o laco no produto
+                            sleep(4);
+
+                            //devolvendo o laco pra bancada
+                            b[acessivel].laco++;
+
+                            printf("> O robo %d devolveu o laco para a bancada %d\n", i, acessivel);
+                            
+                            // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o laco
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouDuasFerramentas=true;
+                        }else if(b[acessivel].machado>0 && (pegouUmaFerramenta && pegouDuasFerramentas))
+                        {
+                            b[acessivel].machado--;
+
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, acessivel);
+                            
+                            // usando o machado no produto
+                            sleep(2);
+
+                            //devolvendo o machado pra bancada
+                            b[acessivel].machado++;
+
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, acessivel);
+                            
+                            // aqui ele deveria dar um broadcast pra todo mundo que ta esperando o machado
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--;
+                        }
+                    }
+                }else
+                {
+                    //esse else aqui eh pra quando o robo pode usar as duas bancadas
+
+                    while((b[besq].martelo<=0 && b[bdir].martelo<=0) || (b[besq].laco<=0 && b[bdir].laco<=0) || (b[besq].machado<=0 && b[bdir].machado<=0))
+                    {
+                        // se nao tiver martelo nem um laco e nem um machado em nenhuma das duas bancadas, ele vai ter que esperar
+                        printf("O robo %d esta esperando por um martelo ou por um laco ou por um machado na bancada %d e na bancada %d\n", i, besq, bdir);
+                        pthread_cond_wait(&cond_marteloMachadoLaco, &lock_bancada);
+                    }
+                    // se algum robo passar daqui, eh porque tem pelo menos 1 martelo ou pelo menos 1 laco ou pelo menos 1 machado em alguma das bancadas perto dele
+
+                    bool pegouUmaFerramenta=false; bool pegouDuasFerramentas=false;
+                    int ferrUsadas=3;
+
+                    while(ferrUsadas)
+                    {
+                        if(b[besq].martelo>0 && (!pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[besq].martelo--;
+
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, besq);
+                            
+                            sleep(3);
+
+                            b[besq].martelo++;
+
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, besq);
+                            
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouUmaFerramenta=true;
+                        }
+                        else if(b[besq].laco>0 && (pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[besq].laco--;
+
+                            printf(">> O robo %d pegou o laco da bancada %d\n", i, besq);
+
+                            sleep(4);
+                            b[besq].laco++;
+
+                            printf("> O robo %d devolveu o laco para a bancada %d\n", i, besq);
+
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouDuasFerramentas=true;
+                        }else if(b[besq].machado>0 && (pegouUmaFerramenta && pegouDuasFerramentas))
+                        {
+                            b[besq].machado--;
+
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, besq);
+
+                            sleep(2);
+                            b[besq].machado++;
+
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, besq);
+
+                            pthread_cond_broadcast(&cond_machadoLaco); ferrUsadas--;
+                        }else if(b[bdir].martelo>0 && (!pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[bdir].martelo--;
+
+                            printf(">> O robo %d pegou o martelo da bancada %d\n", i, bdir);
+                            
+                            sleep(3);
+
+                            b[bdir].martelo++;
+
+                            printf("> O robo %d devolveu o martelo para a bancada %d\n", i, bdir);
+                            
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouUmaFerramenta=true;
+                        }
+                        else if(b[bdir].laco>0 && (pegouUmaFerramenta && !pegouDuasFerramentas))
+                        {
+                            b[bdir].laco--;
+
+                            printf(">> O robo %d pegou o laco da bancada %d\n", i, bdir);
+
+                            sleep(4);
+                            b[bdir].laco++;
+
+                            printf("> O robo %d devolveu o laco para a bancada %d\n", i, bdir);
+
+                            pthread_cond_broadcast(&cond_marteloMachadoLaco); ferrUsadas--; pegouDuasFerramentas=true;
+                        }else if(b[bdir].machado>0 && (pegouUmaFerramenta && pegouDuasFerramentas))
+                        {
+                            b[bdir].machado--;
+
+                            printf(">> O robo %d pegou o machado da bancada %d\n", i, bdir);
+
+                            sleep(2);
+                            b[bdir].machado++;
+
+                            printf("> O robo %d devolveu o machado para a bancada %d\n", i, bdir);
+
+                            pthread_cond_broadcast(&cond_machadoLaco); ferrUsadas--;
+                        }
+                    }
+                }
+
                 break;
             default:
                 printf("mlk como conseguiste pegar um tipo fora de 7 pela funcao rand\n");
@@ -804,7 +882,6 @@ int main(/*int argc, char* argv[]*/)
     // eu ainda nao entendi muito bem pra que serve um join, entao vou deixar ele comentado ate ver que meu programa quebra sem ele
     // updates: descobri pra que que o join serve
     for(int i=0; i<ROBOS; i++) pthread_join(robos[i], NULL);
-
 
     return 0;
 }
