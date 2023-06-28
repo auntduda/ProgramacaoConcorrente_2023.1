@@ -10,6 +10,7 @@
 // Para resolver este problema de gerenciamento, serao usados locks de controle de fluxo e variaveis condicionais para garantir integridade
 
 // e se os produtos tambem fossem threads?
+// eu acabei de perceber que, como os robos nao alteram os produtos - eles so mexem neses -, uma das condicoes do trabalho meio que nao existe
 
 #include "stdio.h"
 #include "stdbool.h"
