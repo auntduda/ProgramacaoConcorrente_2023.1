@@ -91,6 +91,10 @@ void* esteira(void* id)
 
                     pthread_mutex_lock(&lock_bancada);
 
+                    // talvez aqui fosse interessante de se abrir o lock do calculo, mas antes salvando a posicao do robo,
+                    // o produto que ele ta usando, e as bancadas que ele pode usar, porque assim eu libero outro robo
+                    // pra processar outros produtos e torno esse problema concorrente
+
                     while(b[acessivel].martelo<=0)
                     {
                         // se nao tiver martelo na bancada, ele vai ter que esperar
